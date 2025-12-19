@@ -3,9 +3,9 @@ import { Search, MapPin, ChevronDown } from 'lucide-react';
 
 const PropertySearch = () => {
     return (
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex flex-col md:flex-row gap-4 items-center">
+        <div className="flex flex-col md:flex-row gap-4 items-center">
             {/* Main Search Input */}
-            <div className="flex-grow flex items-center bg-slate-50 px-4 py-3 rounded-lg border border-slate-200 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-100 transition-all w-full">
+            <div className="flex-grow flex items-center bg-white shadow-sm px-4 py-3 rounded-lg border border-slate-200 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-100 transition-all w-full">
                 <Search size={20} className="text-slate-400 mr-3" />
                 <input
                     type="text"

@@ -13,15 +13,15 @@ const InputGroup = ({ label, name, value, onChange, placeholder, type = "text", 
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
-                className={`w-full px-4 py-2.5 rounded-lg border focus:ring-2 outline-none transition-all placeholder:text-slate-400 text-slate-700 bg-white
+                className={`w-full px-4 py-2.5 rounded-lg focus:ring-2 outline-none transition-all placeholder:text-slate-400 text-slate-700 bg-white
                     ${error
-                        ? 'border-red-500 focus:border-red-500 focus:ring-red-100'
-                        : 'border-slate-200 focus:border-violet-500 focus:ring-violet-100'}`}
+                        ? 'border-2 border-red-500 focus:border-red-500 focus:ring-red-100'
+                        : 'border border-slate-200 focus:border-violet-500 focus:ring-violet-100'}`}
                 {...props}
             />
             {/* Inline Error Message (Near Input) */}
             {error && (
-                <p className="text-xs text-red-500 font-medium mt-1 animate-slide-in-down absolute -bottom-5 left-0">
+                <p className="text-xs text-red-500 font-medium mt-1 animate-slide-in-down">
                     {error}
                 </p>
             )}
@@ -39,10 +39,10 @@ const SelectGroup = ({ label, name, value, onChange, options, required = false, 
                 name={name}
                 value={value}
                 onChange={onChange}
-                className={`w-full px-4 py-2.5 rounded-lg border focus:ring-2 outline-none transition-all appearance-none bg-white text-slate-700 cursor-pointer
+                className={`w-full px-4 py-2.5 rounded-lg focus:ring-2 outline-none transition-all appearance-none bg-white text-slate-700 cursor-pointer
                     ${error
-                        ? 'border-red-500 focus:border-red-500 focus:ring-red-100'
-                        : 'border-slate-200 focus:border-violet-500 focus:ring-violet-100'}`}
+                        ? 'border-2 border-red-500 focus:border-red-500 focus:ring-red-100'
+                        : 'border border-slate-200 focus:border-violet-500 focus:ring-violet-100'}`}
             >
                 <option value="">Select Option</option>
                 {options.map(opt => (
@@ -65,10 +65,10 @@ const SelectGroup = ({ label, name, value, onChange, options, required = false, 
 
 const Step1BasicInfo = ({ formData, handleChange, errors = {} }) => {
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in-up pb-6"> {/* Added pb-6 to accommodate error messages */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in-up pb-6 w-full">
 
             {/* Column 1: Property Information */}
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-6">
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-6 lg:col-span-2">
                 <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                     <div className="p-2 bg-violet-50 rounded-lg text-violet-600">
                         <Building2 size={24} />
@@ -78,7 +78,7 @@ const Step1BasicInfo = ({ formData, handleChange, errors = {} }) => {
 
                 <div className="space-y-6"> {/* Increased spacing */}
                     <InputGroup
-                        label="Property Title"
+                        label="Project / Society Name"
                         name="title"
                         value={formData.title}
                         onChange={handleChange}
@@ -91,34 +91,66 @@ const Step1BasicInfo = ({ formData, handleChange, errors = {} }) => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <SelectGroup
-                            label="Category"
+                            label="Property Category"
                             name="category"
                             value={formData.category}
                             onChange={handleChange}
-                            options={['Apartment', 'Villa', 'Independent House', 'Plot', 'Commercial']}
+                            options={['Apartment', 'Independent House / Villa', 'Residential Plot', 'Farm House', 'Studio Apartment', 'Service Apartment', 'Commercial Office', 'Shop/Showroom']}
                             required
                             error={errors.category}
                         />
                         <SelectGroup
-                            label="Sub Category"
+                            label="Transaction Type"
                             name="subCategory"
                             value={formData.subCategory}
                             onChange={handleChange}
-                            options={['Resale', 'New Launch', 'Ready to Move', 'Under Construction']}
+                            options={['Resale', 'New Launch']}
                             required
                             error={errors.subCategory}
                         />
                     </div>
 
-                    <SelectGroup
-                        label="Listing Type"
-                        name="listingType"
-                        value={formData.listingType}
-                        onChange={handleChange}
-                        options={['Sale', 'Rent', 'Lease']}
-                        required
-                        error={errors.listingType}
-                    />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <SelectGroup
+                            label="I want to"
+                            name="listingType"
+                            value={formData.listingType}
+                            onChange={handleChange}
+                            options={['Sell', 'Rent', 'Lease']}
+                            required
+                            error={errors.listingType}
+                        />
+                        <SelectGroup
+                            label="I am (Posted By)"
+                            name="postedBy"
+                            value={formData.postedBy}
+                            onChange={handleChange}
+                            options={['Owner', 'Broker / Agent', 'Builder']}
+                            required
+                            error={errors.postedBy}
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <SelectGroup
+                            label="Furnishing"
+                            name="furnishing"
+                            value={formData.furnishing}
+                            onChange={handleChange}
+                            options={['Fully Furnished', 'Semi Furnished', 'Unfurnished']}
+                            required
+                            error={errors.furnishing}
+                        />
+                        <SelectGroup
+                            label="Possession Status"
+                            name="possessionStatus"
+                            value={formData.possessionStatus}
+                            onChange={handleChange}
+                            options={['Ready to Move', 'In 1 Year', 'In 3 Years', 'Beyond 3 Years', 'Under Construction']}
+                            required
+                            error={errors.possessionStatus}
+                        />
+                    </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <InputGroup
@@ -133,6 +165,43 @@ const Step1BasicInfo = ({ formData, handleChange, errors = {} }) => {
                             min="0"
                         />
                         <InputGroup
+                            label="Maintenance Charges (Monthly)"
+                            name="maintenanceCharges"
+                            value={formData.maintenanceCharges}
+                            onChange={handleChange}
+                            placeholder="Optional"
+                            type="number"
+                            min="0"
+                            error={errors.maintenanceCharges}
+                        />
+                    </div>
+
+                    {/* Security Deposit only for Rent/Lease */}
+                    {(formData.listingType === 'Rent' || formData.listingType === 'Lease') && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <InputGroup
+                                label="Security Deposit (₹)"
+                                name="securityDeposit"
+                                value={formData.securityDeposit}
+                                onChange={handleChange}
+                                placeholder="0"
+                                type="number"
+                                min="0"
+                            />
+                            <InputGroup
+                                label="Negotiated Price (₹)"
+                                name="negotiatedPrice"
+                                value={formData.negotiatedPrice}
+                                onChange={handleChange}
+                                placeholder="Optional"
+                                type="number"
+                                min="0"
+                            />
+                        </div>
+                    )}
+
+                    {formData.listingType === 'Sell' && (
+                        <InputGroup
                             label="Negotiated Price (₹)"
                             name="negotiatedPrice"
                             value={formData.negotiatedPrice}
@@ -141,7 +210,7 @@ const Step1BasicInfo = ({ formData, handleChange, errors = {} }) => {
                             type="number"
                             min="0"
                         />
-                    </div>
+                    )}
                 </div>
             </div>
 
@@ -155,41 +224,65 @@ const Step1BasicInfo = ({ formData, handleChange, errors = {} }) => {
                 </div>
 
                 <div className="space-y-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <InputGroup
-                            label="First Name"
-                            name="firstName"
-                            value={formData.firstName}
-                            onChange={handleChange}
-                            placeholder="John"
-                            required
-                            error={errors.firstName}
-                            minLength={2}
-                            maxLength={50}
-                        />
-                        <InputGroup
-                            label="Last Name ( initials allowed )"
-                            name="lastName"
-                            value={formData.lastName}
-                            onChange={handleChange}
-                            placeholder="Doe"
-                            required
-                            error={errors.lastName}
-                            minLength={1}
-                            maxLength={50}
-                        />
-                    </div>
 
                     <InputGroup
-                        label="Phone Number"
-                        name="phone"
-                        value={formData.phone}
+                        label="First Name"
+                        name="firstName"
+                        value={formData.firstName}
                         onChange={handleChange}
-                        placeholder="+91 98765 43210"
-                        type="tel"
+                        placeholder="John"
                         required
-                        error={errors.phone}
+                        error={errors.firstName}
+                        minLength={2}
+                        maxLength={50}
                     />
+                    <InputGroup
+                        label="Last Name ( initials allowed )"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        placeholder="Doe"
+                        required
+                        error={errors.lastName}
+                        minLength={1}
+                        maxLength={50}
+                    />
+
+
+                    <div className="space-y-1.5">
+                        <label className="text-sm font-semibold text-slate-700">
+                            Phone Number <span className="text-red-500">*</span>
+                        </label>
+                        <div className="relative flex gap-2">
+                            <select
+                                name="countryCode"
+                                value={formData.countryCode || '+91'} // Fallback
+                                onChange={handleChange}
+                                className="w-24 px-2 py-2.5 rounded-lg border border-slate-200 focus:border-violet-500 focus:ring-2 focus:ring-violet-100 outline-none text-slate-700 bg-white appearance-none text-center cursor-pointer transition-all"
+                            >
+                                <option value="+91">+91 (IN)</option>
+                                <option value="+1">+1 (US)</option>
+                                <option value="+44">+44 (UK)</option>
+                                <option value="+971">+971 (UAE)</option>
+                            </select>
+                            <input
+                                type="tel"
+                                name="phone"
+                                value={formData.phone}
+                                onChange={handleChange}
+                                placeholder="98765 43210"
+                                className={`flex-1 px-4 py-2.5 rounded-lg focus:ring-2 outline-none transition-all placeholder:text-slate-400 text-slate-700 bg-white
+                                    ${errors.phone
+                                        ? 'border-2 border-red-500 focus:border-red-500 focus:ring-red-100'
+                                        : 'border border-slate-200 focus:border-violet-500 focus:ring-violet-100'}`}
+                            />
+                        </div>
+                        {errors.phone && (
+                            <p className="text-xs text-red-500 font-medium mt-1 animate-slide-in-down">
+                                {errors.phone}
+                            </p>
+                        )}
+                    </div>
 
                     <InputGroup
                         label="Whatsapp Number (Optional)"

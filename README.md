@@ -1,16 +1,80 @@
-# React + Vite
+# Propolex - Real Estate Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Propolex is a modern, enterprise-level real estate application built with React, designed to simplify the process of buying, selling, and renting properties. It features a responsive design, advanced property filtering, and a comprehensive dashboard for users to manage their listings and activities.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🏠 Property Management
+- **Comprehensive Listings**: Browse properties for Buy, Rent, Commercial, and Plots.
+- **Advanced Search & Filters**: Filter properties by location, price range, property type, and more.
+- **Detailed Property Views**: High-quality images, amenitites, location details, and owner contact info.
+- **Add Property**: Easy-to-use multi-step form for users to post their own property listings.
 
-## React Compiler
+### 👤 User Experience
+- **User Authentication**: Secure Login and Registration functionality.
+- **User Dashboard**:
+    - **My Listings**: Manage properties you have posted.
+    - **My Activity**: Track your recent interactions.
+    - **Saved Properties**: Bookmark properties for later.
+    - **Contacted**: Keep a history of owners/agents you've contacted.
+- **Profile Management**: Update personal details and preference settings.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+- **Frontend Framework**: [React 19](https://react.dev/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **State Management**: [Redux Toolkit](https://redux-toolkit.js.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Routing**: [React Router DOM](https://reactrouter.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Utilities**: `clsx`, `tailwind-merge` for dynamic class management.
+- **Linting**: ESLint
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Getting Started
+
+### Prerequisites
+Ensure you have Node.js installed on your machine.
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd real-estate-web
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+   The application will be available at `http://localhost:5173`.
+
+## 📜 Scripts
+
+- `npm run dev`: Starts the development server.
+- `npm run build`: Builds the app for production.
+- `npm run lint`: Runs ESLint to check for code quality issues.
+- `npm run preview`: Locally preview the production build.
+
+## 📂 Project Structure
+
+```
+src/
+├── assets/         # Static assets (images, icons)
+├── components/     # Reusable UI components
+├── config/         # App configuration files
+├── context/        # React Context providers
+├── data/           # Mock data or constant data files
+├── features/       # Feature-based modules (Auth, Properties, etc.)
+├── hooks/          # Custom React hooks
+├── layouts/        # Layout components (MainLayout, AuthLayout)
+├── lib/            # Third-party library configurations
+├── pages/          # Application page views
+├── services/       # API service calls
+└── utils/          # Helper utility functions
+```

@@ -17,9 +17,14 @@ const FilterSection = ({ title, children, isOpen = true }) => {
     );
 };
 
-const Checkbox = ({ label }) => (
+const Checkbox = ({ label, checked, onChange }) => (
     <label className="flex items-center gap-3 cursor-pointer group select-none relative">
-        <input type="checkbox" className="peer sr-only" />
+        <input
+            type="checkbox"
+            className="peer sr-only"
+            checked={checked}
+            onChange={onChange}
+        />
         <div className="w-5 h-5 border-2 border-slate-300 rounded flex items-center justify-center text-white bg-white peer-checked:bg-violet-600 peer-checked:border-violet-600 transition-all duration-200 group-hover:border-violet-400">
             <Check size={14} strokeWidth={3} className="opacity-0 peer-checked:opacity-100 transition-opacity duration-200" />
         </div>
@@ -27,31 +32,69 @@ const Checkbox = ({ label }) => (
     </label>
 );
 
-const Radio = ({ label, name, defaultChecked }) => (
+const Radio = ({ label, name, defaultChecked, checked, onChange }) => (
     <label className="flex items-center gap-3 cursor-pointer group select-none">
-        <input type="radio" name={name} defaultChecked={defaultChecked} className="peer sr-only" />
-        <div className="w-5 h-5 border-2 border-slate-300 rounded-full flex items-center justify-center bg-white peer-checked:border-violet-600 group-hover:border-violet-400 transition-all duration-200">
-            <div className="w-2.5 h-2.5 rounded-full bg-violet-600 opacity-0 peer-checked:opacity-100 transition-opacity duration-200" />
+        <input
+            type="radio"
+            name={name}
+            defaultChecked={defaultChecked}
+            checked={checked}
+            onChange={onChange}
+            className="peer sr-only"
+        />
+        <div className="w-5 h-5 border-2 border-slate-300 rounded-full flex items-center justify-center bg-white peer-checked:border-violet-600 group-hover:border-violet-400 transition-all duration-200 peer-checked:[&>div]:opacity-100">
+            <div className="w-2.5 h-2.5 rounded-full bg-violet-600 opacity-0 transition-opacity duration-200" />
         </div>
         <span className="text-slate-600 text-sm font-medium group-hover:text-slate-900 transition-colors">{label}</span>
     </label>
 );
 
 
-const SidebarFilter = () => {
+const SidebarFilter = ({ isMobile = false, filters = {}, setFilters = () => { }, onApply, onClear }) => {
+
+    // Handlers
+    const handleRadioChange = (name, value) => {
+        setFilters(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleCheckboxChange = (category, value) => {
+        setFilters(prev => {
+            const current = prev[category] || [];
+            if (current.includes(value)) {
+                return { ...prev, [category]: current.filter(item => item !== value) };
+            } else {
+                return { ...prev, [category]: [...current, value] };
+            }
+        });
+    };
+
     return (
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm sticky top-24 flex flex-col max-h-[calc(100vh-120px)]">
+        <div className={isMobile
+            ? "h-full flex flex-col"
+            : "bg-white rounded-xl border border-slate-200 shadow-sm sticky top-24 flex flex-col max-h-[calc(100vh-120px)]"
+        }>
             {/* Header - Fixed */}
-            <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-white rounded-t-xl z-10">
-                <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                    <Filter size={20} className="text-violet-600" />
-                    Filters
-                </h3>
-                <button className="text-xs text-violet-600 font-bold hover:text-violet-700 hover:underline uppercase tracking-wide">Clear All</button>
-            </div>
+            {!isMobile && (
+                <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-white rounded-t-xl z-10">
+                    <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <Filter size={20} className="text-violet-600" />
+                        Filters
+                    </h3>
+                    <button
+                        onClick={() => setFilters({
+                            location: '', status: 'All Properties', propertyType: [], budgetMin: '', budgetMax: '',
+                            bhk: [], saleStatus: [], furnishing: [], possessionStatus: [], amenities: [],
+                            facing: [], flooring: [], postedBy: []
+                        })}
+                        className="text-xs text-violet-600 font-bold hover:text-violet-700 hover:underline uppercase tracking-wide"
+                    >
+                        Clear All
+                    </button>
+                </div>
+            )}
 
             {/* Scrollable Content */}
-            <div className="flex-grow overflow-y-auto p-5 custom-scrollbar">
+            <div className={`flex-grow overflow-y-auto p-5 custom-scrollbar ${isMobile ? 'pb-20' : ''}`}>
 
                 {/* Location Search */}
                 <div className="mb-6">
@@ -61,50 +104,76 @@ const SidebarFilter = () => {
                         <input
                             type="text"
                             placeholder="Search locality..."
+                            value={filters?.location || ''}
+                            onChange={(e) => setFilters(prev => ({ ...prev, location: e.target.value }))}
                             className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-200 transition-all"
                         />
                     </div>
                 </div>
 
                 <FilterSection title="Review Status">
-                    <Radio name="status" label="All Properties" defaultChecked />
-                    <Radio name="status" label="Verified Only" />
+                    <Radio
+                        name="status"
+                        label="All Properties"
+                        checked={filters?.status === 'All Properties'}
+                        onChange={() => handleRadioChange('status', 'All Properties')}
+                    />
+                    <Radio
+                        name="status"
+                        label="Verified Only"
+                        checked={filters?.status === 'Verified Only'}
+                        onChange={() => handleRadioChange('status', 'Verified Only')}
+                    />
                 </FilterSection>
 
                 <FilterSection title="Property Type">
-                    <Checkbox label="Apartment" />
-                    <Checkbox label="Independent House / Villa" />
-                    <Checkbox label="Residential Plot" />
-                    <Checkbox label="Farm House" />
-                    <Checkbox label="Studio Apartment" />
-                    <Checkbox label="Service Apartment" />
+                    {['Apartment', 'Independent House / Villa', 'Residential Plot', 'Farm House', 'Studio Apartment', 'Service Apartment'].map(type => (
+                        <Checkbox
+                            key={type}
+                            label={type}
+                            checked={filters?.propertyType?.includes(type)}
+                            onChange={() => handleCheckboxChange('propertyType', type)}
+                        />
+                    ))}
                 </FilterSection>
 
                 <FilterSection title="Budget">
-                    {/* Range inputs can be complex, using simple inputs for now */}
                     <div className="flex items-center gap-2 mb-3">
                         <div className="relative w-full">
                             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs">MIN</span>
-                            <input type="number" className="w-full pl-10 pr-2 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:border-violet-500 outline-none" placeholder="₹" />
+                            <input
+                                type="number"
+                                className="w-full pl-10 pr-2 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:border-violet-500 outline-none"
+                                placeholder="₹"
+                                value={filters?.budgetMin || ''}
+                                onChange={(e) => setFilters(prev => ({ ...prev, budgetMin: e.target.value }))}
+                            />
                         </div>
                         <span className="text-slate-400 font-medium">-</span>
                         <div className="relative w-full">
                             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs">MAX</span>
-                            <input type="number" className="w-full pl-10 pr-2 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:border-violet-500 outline-none" placeholder="₹" />
+                            <input
+                                type="number"
+                                className="w-full pl-10 pr-2 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:border-violet-500 outline-none"
+                                placeholder="₹"
+                                value={filters?.budgetMax || ''}
+                                onChange={(e) => setFilters(prev => ({ ...prev, budgetMax: e.target.value }))}
+                            />
                         </div>
                     </div>
-                    <div className="flex flex-wrap gap-2">
-                        <span className="bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded cursor-pointer hover:bg-slate-200">Below 50L</span>
-                        <span className="bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded cursor-pointer hover:bg-slate-200">50L - 1Cr</span>
-                        <span className="bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded cursor-pointer hover:bg-slate-200">1Cr +</span>
-                    </div>
+                    {/* Pills can update min/max logic theoretically, but for now leave static or make them work? User didn't prioritize pills. */}
                 </FilterSection>
 
                 <FilterSection title="BHK">
                     <div className="flex gap-2 flex-wrap">
                         {['1 BHK', '2 BHK', '3 BHK', '4 BHK', '5+ BHK'].map(num => (
                             <label key={num} className="cursor-pointer">
-                                <input type="checkbox" className="peer sr-only" />
+                                <input
+                                    type="checkbox"
+                                    className="peer sr-only"
+                                    checked={filters?.bhk?.includes(num)}
+                                    onChange={() => handleCheckboxChange('bhk', num)}
+                                />
                                 <span className="block px-3 py-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-600 peer-checked:bg-violet-600 peer-checked:text-white peer-checked:border-violet-600 hover:border-violet-400 transition-all">
                                     {num}
                                 </span>
@@ -113,63 +182,71 @@ const SidebarFilter = () => {
                     </div>
                 </FilterSection>
 
+                {/* Other sections similarly updated */}
                 <FilterSection title="Sale Status">
-                    <Checkbox label="New Launch" />
-                    <Checkbox label="Ready to Move" />
-                    <Checkbox label="Under Construction" />
-                    <Checkbox label="Resale" />
+                    {['New Launch', 'Ready to Move', 'Under Construction', 'Resale'].map(item => (
+                        <Checkbox key={item} label={item} checked={filters?.saleStatus?.includes(item)} onChange={() => handleCheckboxChange('saleStatus', item)} />
+                    ))}
                 </FilterSection>
 
                 <FilterSection title="Furnishing">
-                    <Checkbox label="Fully Furnished" />
-                    <Checkbox label="Semi Furnished" />
-                    <Checkbox label="Unfurnished" />
+                    {['Fully Furnished', 'Semi Furnished', 'Unfurnished'].map(item => (
+                        <Checkbox key={item} label={item} checked={filters?.furnishing?.includes(item)} onChange={() => handleCheckboxChange('furnishing', item)} />
+                    ))}
                 </FilterSection>
 
                 <FilterSection title="Possession Status">
-                    <Checkbox label="Ready to Move" />
-                    <Checkbox label="In 1 Year" />
-                    <Checkbox label="In 3 Years" />
-                    <Checkbox label="Beyond 3 Years" />
+                    {['Ready to Move', 'In 1 Year', 'In 3 Years', 'Beyond 3 Years'].map(item => (
+                        <Checkbox key={item} label={item} checked={filters?.possessionStatus?.includes(item)} onChange={() => handleCheckboxChange('possessionStatus', item)} />
+                    ))}
                 </FilterSection>
 
                 <FilterSection title="Amenities">
-                    <Checkbox label="Parking" />
-                    <Checkbox label="Lift" />
-                    <Checkbox label="Power Backup" />
-                    <Checkbox label="Gated Security" />
-                    <Checkbox label="Gym" />
-                    <Checkbox label="Swimming Pool" />
-                    <Checkbox label="Club House" />
-                    <Checkbox label="Park / Garden" />
-                    <Checkbox label="Gas Pipeline" />
+                    {['Parking', 'Lift', 'Power Backup', 'Gated Security', 'Gym', 'Swimming Pool', 'Club House', 'Park / Garden', 'Gas Pipeline'].map(item => (
+                        <Checkbox key={item} label={item} checked={filters?.amenities?.includes(item)} onChange={() => handleCheckboxChange('amenities', item)} />
+                    ))}
                 </FilterSection>
 
                 <FilterSection title="Facing">
-                    <Checkbox label="North" />
-                    <Checkbox label="East" />
-                    <Checkbox label="West" />
-                    <Checkbox label="South" />
-                    <Checkbox label="North-East" />
+                    {['North', 'East', 'West', 'South', 'North-East'].map(item => (
+                        <Checkbox key={item} label={item} checked={filters?.facing?.includes(item)} onChange={() => handleCheckboxChange('facing', item)} />
+                    ))}
                 </FilterSection>
 
                 <FilterSection title="Flooring">
-                    <Checkbox label="Vitrified" />
-                    <Checkbox label="Marble" />
-                    <Checkbox label="Wooden" />
-                    <Checkbox label="Granite" />
+                    {['Vitrified', 'Marble', 'Wooden', 'Granite'].map(item => (
+                        <Checkbox key={item} label={item} checked={filters?.flooring?.includes(item)} onChange={() => handleCheckboxChange('flooring', item)} />
+                    ))}
                 </FilterSection>
 
                 <FilterSection title="Posted By">
-                    <Checkbox label="Owner" />
-                    <Checkbox label="Broker / Agent" />
-                    <Checkbox label="Builder" />
+                    {['Owner', 'Broker / Agent', 'Builder'].map(item => (
+                        <Checkbox key={item} label={item} checked={filters?.postedBy?.includes(item)} onChange={() => handleCheckboxChange('postedBy', item)} />
+                    ))}
                 </FilterSection>
 
             </div>
 
             {/* Footer gradient fade for indication if needed, or simple padding */}
-            <div className="h-4 bg-gradient-to-t from-white to-transparent pointer-events-none absolute bottom-0 w-full rounded-b-xl" />
+            {!isMobile && <div className="h-4 bg-gradient-to-t from-white to-transparent pointer-events-none absolute bottom-0 w-full rounded-b-xl" />}
+
+            {/* Mobile Apply Button */}
+            {isMobile && (
+                <div className="p-4 border-t border-slate-100 bg-white mt-auto flex gap-3">
+                    <button
+                        onClick={onClear}
+                        className="flex-1 py-3 border border-slate-200 text-slate-600 font-bold rounded-lg hover:bg-slate-50 transition-all"
+                    >
+                        Clear
+                    </button>
+                    <button
+                        onClick={onApply}
+                        className="flex-[2] py-3 bg-violet-600 text-white font-bold rounded-lg shadow-lg shadow-violet-200 active:scale-[0.98] transition-all"
+                    >
+                        Apply Filters
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
