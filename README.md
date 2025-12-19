@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Propolex - Real Estate Platform
 
 Propolex is a modern, enterprise-level real estate application built with React, designed to simplify the process of buying, selling, and renting properties. It features a responsive design, advanced property filtering, and a comprehensive dashboard for users to manage their listings and activities.
@@ -160,4 +160,3 @@ src/
 ├── services/       # API service calls
 └── utils/          # Helper utility functions
 ```
->>>>>>> 6539b799f381b516fb7fea82472b275fd167aedb
