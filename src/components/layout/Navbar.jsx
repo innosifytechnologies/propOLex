@@ -156,7 +156,7 @@ const Navbar = () => {
                     <div className="md:hidden flex items-center">
                         <button
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className="focus:outline-none p-2 rounded-md text-slate-500 hover:text-slate-700 hover:bg-slate-100"
+                            className={`focus:outline-none p-2 rounded-md transition-colors ${textClasses}`}
                         >
                             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>

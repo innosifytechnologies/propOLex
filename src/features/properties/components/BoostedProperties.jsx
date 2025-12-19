@@ -96,34 +96,6 @@ const BOOSTED_PROPERTIES = [
 
 const BoostedProperties = () => {
     const scrollContainerRef = useRef(null);
-    const [isHovered, setIsHovered] = useState(false);
-
-    // Auto-scroll logic
-    useEffect(() => {
-        let animationFrameId;
-        const scrollContainer = scrollContainerRef.current;
-        const scrollSpeed = 1; // Pixels per frame
-
-        const scroll = () => {
-            if (scrollContainer && !isHovered) {
-                if (scrollContainer.scrollLeft + scrollContainer.clientWidth >= scrollContainer.scrollWidth - 1) {
-                    // Reset to start for infinite loop feeling (or simple bounce back)
-                    // For true infinite, we'd duplicate items. For now, let's just loop back seamlessly if possible or bounce.
-                    // Simple approach: Smooth scroll back to 0 or just increment
-                    // Let's implement simple circular scroll by checking boundary
-                    scrollContainer.scrollLeft = 0; // Quick jump back
-                } else {
-                    scrollContainer.scrollLeft += scrollSpeed;
-                }
-            }
-            animationFrameId = requestAnimationFrame(scroll);
-        };
-
-        animationFrameId = requestAnimationFrame(scroll);
-
-        return () => cancelAnimationFrame(animationFrameId);
-    }, [isHovered]);
-
     const scrollLeft = () => {
         if (scrollContainerRef.current) {
             scrollContainerRef.current.scrollBy({ left: -320, behavior: 'smooth' });
@@ -137,11 +109,7 @@ const BoostedProperties = () => {
     };
 
     return (
-        <div
-            className="py-12 bg-white border-y border-slate-100 relative group/section"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-        >
+        <div className="py-12 bg-white border-y border-slate-100 relative group/section">
             <div className="max-w-7xl mx-auto px-4">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
