@@ -35,6 +35,18 @@
   }
 }
 
+@layer utilities {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+}
+
 /* Pointer Cursor - SAME Arrow Shape, Darker Color */
 /* Hover: Violet-900 Fill (#4c1d95) to indicate interaction */
 a,

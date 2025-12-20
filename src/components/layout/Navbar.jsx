@@ -200,10 +200,12 @@ const Navbar = () => {
                                     </Button>
                                 </Link>
                             )}
-                            <Button className="w-full justify-center gap-2">
-                                <Plus size={18} />
-                                Post Property
-                            </Button>
+                            <Link to="/add-property" onClick={() => setIsMobileMenuOpen(false)}>
+                                <Button className="w-full justify-center gap-2">
+                                    <Plus size={18} />
+                                    Post Property
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </div>

@@ -287,7 +287,7 @@ const AddPropertyPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 py-10">
+        <div className="min-h-screen bg-slate-50 pt-24 pb-10">
             <div className="container mx-auto px-4 max-w-7xl">
 
                 {/* Header */}
@@ -302,7 +302,8 @@ const AddPropertyPage = () => {
 
                 {/* Stepper Progress */}
                 <div className="mb-12">
-                    <div className="flex items-center justify-center w-full">
+                    {/* Scrollable Container with Scrollbar hidden */}
+                    <div className="flex items-center justify-start md:justify-center w-full overflow-x-auto pb-6 no-scrollbar px-2">
                         {steps.map((step, index) => {
                             const isUnlocked = index <= maxStepReached;
                             const isCompleted = index < currentStep;
@@ -312,13 +313,13 @@ const AddPropertyPage = () => {
                                 <React.Fragment key={step.id}>
                                     {/* Connecting Line */}
                                     {index > 0 && (
-                                        <div className={`w-16 sm:w-32 h-1 mx-2 rounded-full transition-colors duration-300 ${index <= maxStepReached ? 'bg-violet-600' : 'bg-slate-200'
+                                        <div className={`w-16 sm:w-32 h-1 mx-2 rounded-full transition-colors duration-300 shrink-0 ${index <= maxStepReached ? 'bg-violet-600' : 'bg-slate-200'
                                             }`}></div>
                                     )}
                                     {/* Step Circle */}
                                     <div
                                         onClick={() => isUnlocked && goToStep(index)}
-                                        className={`flex flex-col items-center relative z-10 group animate-fade-in-up ${isUnlocked ? 'cursor-pointer' : 'cursor-not-allowed'
+                                        className={`flex flex-col items-center relative z-10 group animate-fade-in-up shrink-0 ${isUnlocked ? 'cursor-pointer' : 'cursor-not-allowed'
                                             }`}
                                     >
                                         <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 border-4 
