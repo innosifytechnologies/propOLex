@@ -52,11 +52,11 @@ const CategorySection = () => {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 ">
                     {categories.map((cat) => (
                         <div
                             key={cat.id}
-                            className="group relative bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:border-primary-100 transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                            className="group relative bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:border-primary-100 transition-all duration-300 transform hover:-translate-y-1 cursor-pointer flex flex-col items-center justify-center"
                         >
                             <div className={`inline-flex items-center justify-center p-4 rounded-xl ${cat.color} mb-6 transition-colors group-hover:bg-primary-50`}>
                                 {cat.icon}

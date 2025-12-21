@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, MapPin, Home, DollarSign, BedDouble, ArrowRight, Tag, Sofa, ChevronDown } from 'lucide-react';
+import { Search, MapPin, Home, DollarSign, BedDouble, ArrowRight, Tag, Sofa, ChevronDown, History } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import heroBg from '@/assets/hero-bg.png';
 import { Building2 as Building2Icon } from 'lucide-react';
@@ -39,9 +39,9 @@ const HeroSection = () => {
     }, [text, isDeleting, loopNum, typingSpeed]);
 
     return (
-        <div className="relative h-[600px] w-full font-sans">
+        <div className="relative h-[400px] mb-28 w-full font-sans flex flex-col items-center justify-center">
             {/* Hero Content Wrapper (Clipped) */}
-            <div className="absolute inset-0 rounded-b-[80px] overflow-hidden">
+            <div className="absolute inset-0 rounded-b-[30px] overflow-hidden">
                 {/* Background Image with Gradient Overlay */}
                 <div className="absolute inset-0 z-0">
                     <img
@@ -53,15 +53,16 @@ const HeroSection = () => {
                 </div>
 
                 {/* Centered Title */}
-                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pb-32 px-4 text-center pointer-events-none">
-                    <div className="space-y-4 animate-fade-in-up">
-                        <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight drop-shadow-lg">
-                            <div>Discover Your New</div>
-                            <div className="mt-2 text-primary-400">
+                <div className="absolute inset-0 z-10 flex flex-col  justify-center pb-32 px-6 text-center pointer-events-none">
+                    <div className=" animate-fade-in-up mt-24">
+                        <h1 className="text-[30px] md:text-4xl font-bold text-white tracking-tight drop-shadow-lg grid grid-rows-2 md:grid-cols-2 gap-x-2 w-full max-w-4xl mx-auto">
+                           
+                            <div className=" text-left md:text-right">Discover Your New</div>
+                            <div className="text-left text-primary-400">
                                 {text}<span className="animate-pulse text-white">|</span>
                             </div>
                         </h1>
-                        <p className="text-xl md:text-2xl text-slate-200 font-light max-w-2xl mx-auto drop-shadow-md">
+                        <p className="text-lg md:text-md text-white/90 font-[600] max-w-2xl mx-auto drop-shadow-md text-left md:text-center md:mt-[-10px] mt-[10px]">
                             We have the most listings and constant updates. So you never miss out.
                         </p>
                     </div>
@@ -69,10 +70,10 @@ const HeroSection = () => {
             </div>
 
             {/* Search Section - Bottom Aligned */}
-            <div className="absolute bottom-0 z-20 w-full px-4 pb-6 sm:pb-10">
+            <div className="absolute bottom-0 z-20 w-full px-4 translate-y-1/2">
                 <div className="max-w-5xl mx-auto">
                     {/* Search Box & Filters Container */}
-                    <div className="bg-white/10 backdrop-blur-lg p-6 rounded-[40px] shadow-2xl space-y-4 text-left border border-white/20">
+                    <div className="bg-white/5 backdrop-blur-lg p-6 rounded-[30px] shadow-2xl space-y-4 text-left border border-white/20">
 
                         {/* Top Row: Search Input */}
                         <div className="relative flex items-center">
@@ -213,6 +214,19 @@ const HeroSection = () => {
                                     Search
                                 </Button>
                             </div>
+                        </div>
+
+                        {/* Recent Searches Pills */}
+                        <div className="hidden sm:flex justify-center flex-wrap gap-3 pt-2 border-t border-white/20">
+                            {["Whitefield, Bangalore", "3 BHK Villa", "Rental near Tech Park", "All Searches"].map((item, idx) => (
+                                <button
+                                    key={idx}
+                                    className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-slate-200 hover:border-slate-400 bg-white/50 hover:bg-white hover:shadow-sm transition-all text-sm text-slate-700 font-medium"
+                                >
+                                    <History size={14} className="text-slate-500" />
+                                    {item}
+                                </button>
+                            ))}
                         </div>
 
                     </div>

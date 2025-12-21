@@ -9,16 +9,12 @@ const HomePage = () => {
         <div className="flex flex-col min-h-screen">
             {/* 1. Hero Section (Search & Background) */}
             <HeroSection />
-
-            {/* 2. Property Categories (Houses, Villas, etc.) */}
-            <CategorySection />
-
             {/* 3. Boosted Listings (Carousel) */}
             <BoostedProperties />
-
+            {/* 2. Property Categories (Houses, Villas, etc.) */}
+            <CategorySection />
             {/* 4. Vendor Categories (Multivendor) */}
             <VendorSection />
-
             {/* 5. CTA Section */}
             <div className="bg-primary-900 py-20">
                 <div className="max-w-4xl mx-auto px-4 text-center">

@@ -118,7 +118,7 @@ const BoostedProperties = () => {
                             <Zap size={14} fill="currentColor" />
                             <span className="font-bold text-xs uppercase tracking-wider leading-none mt-0.5">Premium Selection</span>
                         </div>
-                        <h3 className="text-3xl font-bold text-slate-900 mt-1">Boosted Properties</h3>
+                        <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mt-1">Recomanded Properties For You</h3>
                     </div>
 
                     {/* Manual Controls */}
