@@ -1,40 +1,46 @@
-name: Deploy Frontend to EC2
+name: Deploy propOLex to EC2
 
 on:
   push:
     branches:
-      - main  # deploy when main is updated
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout repository
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # 2️⃣ Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
+      # 3️⃣ Install dependencies (from repo root)
       - name: Install dependencies
-        run: npm ci
-        working-directory: frontend/propOLex
+        working-directory: .
+        run: npm install
 
-      - name: Build frontend
+      # 4️⃣ Build project (from repo root)
+      - name: Build project
+        working-directory: .
         run: npm run build
-        working-directory: ./frontend/propOLex
 
+      # 5️⃣ Copy build files to EC2
       - name: Copy files to EC2
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "./frontend/propOLex/dist/*"
+          source: "dist/*"        # Assuming build output is in 'dist'
           target: ${{ secrets.EC2_PATH }}
 
+      # 6️⃣ Reload Nginx
       - name: Reload Nginx
         uses: appleboy/ssh-action@master
         with:
