@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout repository
+      # 1️⃣ Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -20,12 +20,12 @@ jobs:
         with:
           node-version: 20
 
-      # 3️⃣ Install dependencies (from repo root)
+      # 3️⃣ Install dependencies (repo root)
       - name: Install dependencies
         working-directory: .
         run: npm install
 
-      # 4️⃣ Build project (from repo root)
+      # 4️⃣ Build project
       - name: Build project
         working-directory: .
         run: npm run build
@@ -35,17 +35,17 @@ jobs:
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          source: "dist/*"        # Assuming build output is in 'dist'
-          target: ${{ secrets.EC2_PATH }}
+          username: ubuntu                  # Make sure this matches your EC2 user
+          key: ${{ secrets.EC2_SSH_KEY }}   # Your .pem key content in GitHub Secrets
+          source: "dist/*"                  # Adjust if your build output is elsewhere
+          target: "/home/ubuntu/propOLex/" # Adjust target path on EC2
 
       # 6️⃣ Reload Nginx
       - name: Reload Nginx
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
+          username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             sudo systemctl restart nginx
